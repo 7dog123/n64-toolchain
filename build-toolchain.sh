@@ -20,7 +20,7 @@ TARGET="mips64-elf"
 INSTALL_PATH="${N64_INST:-/usr/local/n64_toolchain}"
 # rm -rf "$INSTALL_PATH" # We should probably do a clean install?!
 
-if [[ "$OSTYPE" == "mingw64"* ]] && [[ "$OSTYPE" == "mingw32"* ]]; then
+if [[ "$OSTYPE" == "msys" ]]; then
        mkdir -p "$INSTALL_PATH" # But make sure the install path exists!
 elif [[ "$OSTYPE" == "linux-gnu"* ]]; then
        sudo mkdir -p "$INSTALL_PATH" # But make sure the install path exists!
@@ -64,7 +64,7 @@ test -d "gcc-$GCC_V"                  || tar -xzf "gcc-$GCC_V.tar.gz" --checkpoi
 test -f "newlib-$NEWLIB_V.tar.gz"     || download "https://sourceware.org/pub/newlib/newlib-$NEWLIB_V.tar.gz"
 test -d "newlib-$NEWLIB_V"            || tar -xzf "newlib-$NEWLIB_V.tar.gz"
 
-if [ "$OSTYPE" == "mingw64"* ] && [ "$OSTYPE" == "mingw32"* ]; then
+if [ "$OSTYPE" == "msys" ]; then
 GMP_V=6.2.0
 MPC_V=1.2.1
 MPFR_V=4.1.0
@@ -90,7 +90,7 @@ echo "Stage: Compile toolchain"
 echo "Compiling binutils-$BINUTILS_V"
 
 cd "binutils-$BINUTILS_V"
-if [ "$OSTYPE" == "mingw64"* ] && [ "$OSTYPE" == "mingw32"* ]; then
+if [ "$OSTYPE" == "msys" ]; then
      # Hack - see native package for details
      sed -i "/ac_cpp=/s/\$CPPFLAGS/\$CPPFLAGS -O2/" libiberty/configure
 fi
@@ -102,7 +102,7 @@ fi
   --disable-werror
 make -j "$JOBS"
 
-if [[ "$OSTYPE" == "mingw64"* ]] && [[ "$OSTYPE" == "mingw32"* ]]; then
+if [[ "$OSTYPE" == "msys" ]]; then
 	make install-strip
 elif [[ "$OSTYPE" == "linux-gnu"* ]]; then
 	sudo make install-strip || su -c "make install-strip"
@@ -140,7 +140,7 @@ cd gcc_compile
   --with-system-zlib
 make all-gcc -j "$JOBS"
 make all-target-libgcc -j "$JOBS"
-if [[ "$OSTYPE" == "mingw64"* ]] && [[ "$OSTYPE" == "mingw32"* ]]; then
+if [[ "$OSTYPE" == "msys" ]]; then
 	make install-strip-gcc
 	make install-target-libgcc
 elif [[ "$OSTYPE" == "linux-gnu"* ]]; then
@@ -166,7 +166,7 @@ CFLAGS_FOR_TARGET="-DHAVE_ASSERT_FUNC -O2" ./configure \
   --disable-werror
 make -j "$JOBS"
 
-if [[ "$OSTYPE" == "mingw64"* ]] && [[ "$OSTYPE" == "mingw32"* ]]; then
+if [[ "$OSTYPE" == "msys" ]]; then
 	make install
 elif [[ "$OSTYPE" == "linux-gnu"* ]]; then
 	sudo env PATH="$PATH" make install || su -c "env PATH=\"$PATH\" make install"
@@ -176,7 +176,7 @@ fi
 
 echo "Finished Compiling newlib-$NEWLIB_V"
 
-if [ "$OSTYPE" == "mingw64"* ] && [ "$OSTYPE" == "mingw32"* ]; then
+if [ "$OSTYPE" == "msys" ]; then
 echo "Compiling make-$MAKE_V" # As make is otherwise not available on Windows
 cd ../"make-$MAKE_V"
   ./configure \
