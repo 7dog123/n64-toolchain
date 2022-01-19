@@ -94,8 +94,7 @@ cd "binutils-$BINUTILS_V"
   --prefix="$INSTALL_PATH" \
   --target="$TARGET" \
   --with-cpu=mips64vr4300 \
-  --disable-werror \
-  $TARG_XTRA_OPTS
+  --disable-werror
 make -j "$JOBS"
 
 if [[ "$OSTYPE" == "msys"* ]]; then
@@ -103,7 +102,7 @@ if [[ "$OSTYPE" == "msys"* ]]; then
 elif [[ "$OSTYPE" == "linux-gnu"* ]]; then
 	sudo make install-strip || su -c "make install-strip"
 else
-        # Do Nothing
+        echo "Do Nothing"
 fi
 
 make distclean # Cleanup to ensure we can build it again
@@ -133,8 +132,7 @@ cd gcc_compile
   --disable-win32-registry \
   --disable-nls \
   --disable-werror \
-  --with-system-zlib \
-  $TARG_XTRA_OPTS
+  --with-system-zlib
 make all-gcc -j "$JOBS"
 make all-target-libgcc -j "$JOBS"
 if [[ "$OSTYPE" == "msys"* ]]; then
@@ -144,7 +142,7 @@ elif [[ "$OSTYPE" == "linux-gnu"* ]]; then
 	sudo make install-strip-gcc || su -c "make install-strip-gcc"
 	sudo make install-target-libgcc || su -c "make install-target-libgcc"
 else
-        # Do Nothing
+        echo "Do Nothing"
 fi
 
 echo "Finished Compiling GCC-$GCC_V for MIPS N64 - (pass 1) outside of the source tree"
@@ -160,8 +158,7 @@ CFLAGS_FOR_TARGET="-DHAVE_ASSERT_FUNC -O2" ./configure \
   --with-cpu=mips64vr4300 \
   --disable-threads \
   --disable-libssp \
-  --disable-werror \
-  $TARG_XTRA_OPTS
+  --disable-werror
 make -j "$JOBS"
 
 if [[ "$OSTYPE" == "msys"* ]]; then
@@ -169,7 +166,7 @@ if [[ "$OSTYPE" == "msys"* ]]; then
 elif [[ "$OSTYPE" == "linux-gnu"* ]]; then
 	sudo env PATH="$PATH" make install || su -c "env PATH=\"$PATH\" make install"
 else
-        # Do Nothing
+      echo "Do Nothing"
 fi
 
 echo "Finished Compiling newlib-$NEWLIB_V"
@@ -182,7 +179,6 @@ cd ../"make-$MAKE_V"
     --disable-largefile \
     --disable-nls \
     --disable-rpath \
-    $TARG_XTRA_OPTS
 make -j "$JOBS"
 make install-strip
 make clean
