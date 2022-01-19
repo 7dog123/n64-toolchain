@@ -77,7 +77,7 @@ MAKE_V=4.2.1
 # Copies the FP libs into GCC sources so they are compiled as part of it
 echo "Download and extract gmp-$GMP_V"
   test -f "gmp-$GMP_V.tar.bz2"         || download "https://ftp.gnu.org/gnu/gmp/gmp-$GMP_V.tar.bz2"
-  test -d "gmp-$GMP_V"                || tar -xf "gmp-$GMP_V.tar.bz2" -c gcc-$GCC_V/gmp # note no .gz download file currently available
+  test -d "gmp-$GMP_V"                || tar -xf "gmp-$GMP_V.tar.bz2" -C gcc-$GCC_V/gmp # note no .gz download file currently available
 
 echo "Download and extract mpc-$MPC_V"
   test -f "mpc-$MPC_V.tar.gz"         || download "https://ftp.gnu.org/gnu/mpc/mpc-$MPC_V.tar.gz"
