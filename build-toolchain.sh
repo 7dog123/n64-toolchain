@@ -17,10 +17,10 @@ set -e
 TARGET=mips64-elf
 OSVER=${uname}
 
-if [ "${OSVER:0:10}"== MINGW64_NT ]; then
+if [ "${OSVER:0:10}" == MINGW64_NT ]; then
 	export CC=x86_64-w64-mingw32-gcc
 	TARG_XTRA_OPTS="--host=x86_64-w64-mingw32"
-elif [ "${OSVER:0:10}"== MINGW32_NT ]; then
+elif [ "${OSVER:0:10}" == MINGW32_NT ]; then
 	export CC=i386-w64-mingw32-gcc
         TARG_XTRA_OPTS="--host=i386-w64-mingw32"
 else
@@ -67,7 +67,7 @@ test -d "gcc-$GCC_V"                  || tar -xzf "gcc-$GCC_V.tar.gz" --checkpoi
 test -f "newlib-$NEWLIB_V.tar.gz"     || download "https://sourceware.org/pub/newlib/newlib-$NEWLIB_V.tar.gz"
 test -d "newlib-$NEWLIB_V"            || tar -xzf "newlib-$NEWLIB_V.tar.gz"
 
-if [ "${OSVER:0:10}"== MINGW64_NT ] && [ "${OSVER:0:10}"== MINGW32_NT; then
+if [ "${OSVER:0:10}" == MINGW64_NT ] && [ "${OSVER:0:10}" == MINGW32_NT ]; then
 GMP_V=6.2.0
 MPC_V=1.2.1
 MPFR_V=4.1.0
@@ -101,7 +101,7 @@ cd "binutils-$BINUTILS_V"
   $TARG_XTRA_OPTS
 make -j "$JOBS"
 
-if [ "${OSVER:0:10}"== MINGW64_NT ] && [ "${OSVER:0:10}"== MINGW64_NT ]; then
+if [ "${OSVER:0:10}" == MINGW64_NT ] && [ "${OSVER:0:10}" == MINGW32_NT ]; then
 	make install-strip
 else
 	sudo make install-strip || su -c "make install-strip"
@@ -138,7 +138,7 @@ cd gcc_compile
   $TARG_XTRA_OPTS
 make all-gcc -j "$JOBS"
 make all-target-libgcc -j "$JOBS"
-if [ "${OSVER:0:10}"== MINGW64_NT ] && [ "${OSVER:0:10}"== MINGW32_NT ]; then
+if [ "${OSVER:0:10}" == MINGW64_NT ] && [ "${OSVER:0:10}" == MINGW32_NT ]; then
 	make install-strip-gcc
 	make install-target-libgcc
 else
