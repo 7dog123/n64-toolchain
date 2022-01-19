@@ -55,12 +55,16 @@ download () {
 }
 
 echo "Stage: Download and extract dependencies"
+
+echo "Download and extract binutils-$BINUTILS_V"
 test -f "binutils-$BINUTILS_V.tar.gz" || download "https://ftp.gnu.org/gnu/binutils/binutils-$BINUTILS_V.tar.gz"
 test -d "binutils-$BINUTILS_V"        || tar -xzf "binutils-$BINUTILS_V.tar.gz"
 
+echo "Download and extract gcc-$GCC_V"
 test -f "gcc-$GCC_V.tar.gz"           || download "https://ftp.gnu.org/gnu/gcc/gcc-$GCC_V/gcc-$GCC_V.tar.gz"
 test -d "gcc-$GCC_V"                  || tar -xzf "gcc-$GCC_V.tar.gz" --checkpoint=.100 # TODO: there must be a better way of showing progress (given such a large file)!
 
+echo "Download and extract newlib-$NEWLIB_V"
 test -f "newlib-$NEWLIB_V.tar.gz"     || download "https://sourceware.org/pub/newlib/newlib-$NEWLIB_V.tar.gz"
 test -d "newlib-$NEWLIB_V"            || tar -xzf "newlib-$NEWLIB_V.tar.gz"
 
@@ -71,16 +75,20 @@ MPFR_V=4.1.0
 MAKE_V=4.2.1
 # Optional dependency handling
 # Copies the FP libs into GCC sources so they are compiled as part of it
-  test -f "gmp-$GMP_V.tar.xz"         || download "https://ftp.gnu.org/gnu/gmp/gmp-$GMP_V.tar.xz"
-  test -d "gmp-$GMP_V"                || tar -xf "gmp-$GMP_V.tar.xz" -c gcc-$GCC_V/gmp# note no .gz download file currently available
+echo "Download and extract gmp-$GMP_V"
+  test -f "gmp-$GMP_V.tar.bz2"         || download "https://ftp.gnu.org/gnu/gmp/gmp-$GMP_V.tar.bz2"
+  test -d "gmp-$GMP_V"                || tar -xf "gmp-$GMP_V.tar.bz2" -c gcc-$GCC_V/gmp # note no .gz download file currently available
 
+echo "Download and extract mpc-$MPC_V"
   test -f "mpc-$MPC_V.tar.gz"         || download "https://ftp.gnu.org/gnu/mpc/mpc-$MPC_V.tar.gz"
   test -d "mpc-$MPC_V"                || tar -xzf "mpc-$MPC_V.tar.gz" -C gcc-$GCC_V/mpc
 
+echo "Download and extract mpfr-$MPFR_V"
   test -f "mpfr-$MPFR_V.tar.gz"       || download "https://ftp.gnu.org/gnu/mpfr/mpfr-$MPFR_V.tar.gz"
   test -d "mpfr-$MPFR_V"              || tar -xzf "mpfr-$MPFR_V.tar.gz" -C gcc-$GCC_V/mpfr
 # Certain platforms might require Makefile cross compiling
 
+echo "Download and extract make-$MAKE_V"
   test -f "make-$MAKE_V.tar.gz"       || download "https://ftp.gnu.org/gnu/make/make-$MAKE_V.tar.gz"
   test -d "make-$MAKE_V"              || tar -xzf "make-$MAKE_V.tar.gz"
 fi
