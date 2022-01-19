@@ -6,7 +6,7 @@
 
 # Before calling this script, make sure you have all required
 # dependency packages installed in your system.  On a Debian-based systems
-# this is achieved by typing the following commands:
+#   this is achieved by typing the following commands:
 #
 # sudo apt-get update && sudo apt-get upgrade
 # sudo apt-get install -yq wget bzip2 gcc g++ make file libmpfr-dev libmpc-dev zlib1g-dev texinfo git gcc-multilib
@@ -15,26 +15,17 @@
 set -e
 
 TARGET="mips64-elf"
-OSVER=$(uname)
-
-if [ "${OSVER:0:10}" == MINGW64_NT ]; then
-	export CC=x86_64-w64-mingw32-gcc
-	TARG_XTRA_OPTS="--host=x86_64-w64-mingw32"
-elif [ "${OSVER:0:10}" == MINGW32_NT ]; then
-	export CC=i386-w64-mingw32-gcc
-        TARG_XTRA_OPTS="--host=i386-w64-mingw32"
-else
-	TARG_XTRA_OPTS=""
-fi
+#OSVER=$(uname)
 
 INSTALL_PATH="${N64_INST:-/usr/local/n64_toolchain}"
 # rm -rf "$INSTALL_PATH" # We should probably do a clean install?!
 
-if [ "${OSVER:0:10}" == MINGW64_NT ] && [ "${OSVER:0:10}" == MINGW32_NT ]
-then
+if [[ "$OSTYPE" == "msys"* ]]; then
        mkdir -p "$INSTALL_PATH" # But make sure the install path exists!
-else
+elif [[ "$OSTYPE" == "linux-gnu"* ]]; then
        sudo mkdir -p "$INSTALL_PATH" # But make sure the install path exists!
+else
+       echo "Unknown OS"
 fi
 
 BINUTILS_V=2.36.1
@@ -73,7 +64,7 @@ test -d "gcc-$GCC_V"                  || tar -xzf "gcc-$GCC_V.tar.gz" --checkpoi
 test -f "newlib-$NEWLIB_V.tar.gz"     || download "https://sourceware.org/pub/newlib/newlib-$NEWLIB_V.tar.gz"
 test -d "newlib-$NEWLIB_V"            || tar -xzf "newlib-$NEWLIB_V.tar.gz"
 
-if [ "${OSVER:0:10}" == MINGW64_NT ] && [ "${OSVER:0:10}" == MINGW32_NT ]; then
+if [ "$OSTYPE" == "msys"* ]; then
 GMP_V=6.2.0
 MPC_V=1.2.1
 MPFR_V=4.1.0
@@ -107,10 +98,12 @@ cd "binutils-$BINUTILS_V"
   $TARG_XTRA_OPTS
 make -j "$JOBS"
 
-if [ "${OSVER:0:10}" == MINGW64_NT ] && [ "${OSVER:0:10}" == MINGW32_NT ]; then
+if [[ "$OSTYPE" == "msys"* ]]; then
 	make install-strip
-else
+elif [[ "$OSTYPE" == "linux-gnu"* ]]; then
 	sudo make install-strip || su -c "make install-strip"
+else
+        # Do Nothing
 fi
 
 make distclean # Cleanup to ensure we can build it again
@@ -144,12 +137,14 @@ cd gcc_compile
   $TARG_XTRA_OPTS
 make all-gcc -j "$JOBS"
 make all-target-libgcc -j "$JOBS"
-if [ "${OSVER:0:10}" == MINGW64_NT ] && [ "${OSVER:0:10}" == MINGW32_NT ]; then
+if [[ "$OSTYPE" == "msys"* ]]; then
 	make install-strip-gcc
 	make install-target-libgcc
-else
+elif [[ "$OSTYPE" == "linux-gnu"* ]]; then
 	sudo make install-strip-gcc || su -c "make install-strip-gcc"
 	sudo make install-target-libgcc || su -c "make install-target-libgcc"
+else
+        # Do Nothing
 fi
 
 echo "Finished Compiling GCC-$GCC_V for MIPS N64 - (pass 1) outside of the source tree"
@@ -169,14 +164,17 @@ CFLAGS_FOR_TARGET="-DHAVE_ASSERT_FUNC -O2" ./configure \
   $TARG_XTRA_OPTS
 make -j "$JOBS"
 
-if [ "${OSVER:0:10}" == MINGW64_NT ] && [ "${OSVER:0:10}" == MINGW32_NT ]; then
+if [[ "$OSTYPE" == "msys"* ]]; then
 	make install
-else
+elif [[ "$OSTYPE" == "linux-gnu"* ]]; then
 	sudo env PATH="$PATH" make install || su -c "env PATH=\"$PATH\" make install"
+else
+        # Do Nothing
 fi
+
 echo "Finished Compiling newlib-$NEWLIB_V"
 
-if [ "${OSVER:0:10}" == MINGW64_NT ] && [ "${OSVER:0:10}" == MINGW32_NT ]; then
+if [ "$OSTYPE" == "msys"* ]; then
 echo "Compiling make-$MAKE_V" # As make is otherwise not available on Windows
 cd ../"make-$MAKE_V"
   ./configure \
