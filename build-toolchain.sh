@@ -35,6 +35,8 @@ then
        mkdir -p "$INSTALL_PATH" # But make sure the install path exists!
 elif
        sudo mkdir -p "$INSTALL_PATH" # But make sure the install path exists!
+else
+       mkdir -p "$INSTALL_PATH" # But make sure the install path exists!
 fi
 
 BINUTILS_V=2.36.1
