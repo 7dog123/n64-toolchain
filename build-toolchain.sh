@@ -30,9 +30,10 @@ fi
 INSTALL_PATH="${N64_INST:-/usr/local/n64_toolchain}"
 # rm -rf "$INSTALL_PATH" # We should probably do a clean install?!
 
-if [ "${OSVER:0:10}" == MINGW64_NT ] && [ "${OSVER:0:10}" == MINGW32_NT ]; then
+if [ "${OSVER:0:10}" == MINGW64_NT ] && [ "${OSVER:0:10}" == MINGW32_NT ]
+then
        mkdir -p "$INSTALL_PATH" # But make sure the install path exists!
-else 
+elif
        sudo mkdir -p "$INSTALL_PATH" # But make sure the install path exists!
 fi
 
