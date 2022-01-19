@@ -14,8 +14,8 @@
 # Exit script on error
 set -e
 
-TARGET=mips64-elf
-OSVER=${uname}
+TARGET="mips64-elf"
+OSVER=$(uname)
 
 if [ "${OSVER:0:10}" == MINGW64_NT ]; then
 	export CC=x86_64-w64-mingw32-gcc
