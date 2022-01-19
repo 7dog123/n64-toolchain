@@ -82,7 +82,7 @@ echo "Download and extract gmp-$GMP_V"
 
 echo "Download and extract mpc-$MPC_V"
   test -f "mpc-$MPC_V.tar.gz"         || download "https://ftp.gnu.org/gnu/mpc/mpc-$MPC_V.tar.gz"
-  mkdir gcc-$GCC_V/mpv
+  mkdir gcc-$GCC_V/mpc
   test -d "mpc-$MPC_V"                || tar -xzf "mpc-$MPC_V.tar.gz" -C gcc-$GCC_V/mpc
 
 echo "Download and extract mpfr-$MPFR_V"
