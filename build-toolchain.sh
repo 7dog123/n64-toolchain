@@ -87,7 +87,7 @@ echo "Download and extract mpc-$MPC_V"
 
 echo "Download and extract mpfr-$MPFR_V"
   test -f "mpfr-$MPFR_V.tar.gz"       || download "https://ftp.gnu.org/gnu/mpfr/mpfr-$MPFR_V.tar.gz"
-  mkdir gcc-$GCC_V/gmp
+  mkdir gcc-$GCC_V/mpfr
   test -d "mpfr-$MPFR_V"              || tar -xzf "mpfr-$MPFR_V.tar.gz" -C gcc-$GCC_V/mpfr
 # Certain platforms might require Makefile cross compiling
 
