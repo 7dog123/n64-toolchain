@@ -90,6 +90,11 @@ echo "Stage: Compile toolchain"
 echo "Compiling binutils-$BINUTILS_V"
 
 cd "binutils-$BINUTILS_V"
+if [ "$OSTYPE" == "mingw64"* ] && [ "$OSTYPE" == "mingw32"* ]; then
+     # Hack - see native package for details
+     sed -i "/ac_cpp=/s/\$CPPFLAGS/\$CPPFLAGS -O2/" libiberty/configure
+fi
+
 ./configure \
   --prefix="$INSTALL_PATH" \
   --target="$TARGET" \
