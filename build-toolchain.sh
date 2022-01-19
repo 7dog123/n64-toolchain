@@ -77,14 +77,17 @@ MAKE_V=4.2.1
 # Copies the FP libs into GCC sources so they are compiled as part of it
 echo "Download and extract gmp-$GMP_V"
   test -f "gmp-$GMP_V.tar.bz2"         || download "https://ftp.gnu.org/gnu/gmp/gmp-$GMP_V.tar.bz2"
+  mkdir gcc-$GCC_V/gmp
   test -d "gmp-$GMP_V"                || tar -xf "gmp-$GMP_V.tar.bz2" -C gcc-$GCC_V/gmp # note no .gz download file currently available
 
 echo "Download and extract mpc-$MPC_V"
   test -f "mpc-$MPC_V.tar.gz"         || download "https://ftp.gnu.org/gnu/mpc/mpc-$MPC_V.tar.gz"
+  mkdir gcc-$GCC_V/mpv
   test -d "mpc-$MPC_V"                || tar -xzf "mpc-$MPC_V.tar.gz" -C gcc-$GCC_V/mpc
 
 echo "Download and extract mpfr-$MPFR_V"
   test -f "mpfr-$MPFR_V.tar.gz"       || download "https://ftp.gnu.org/gnu/mpfr/mpfr-$MPFR_V.tar.gz"
+  mkdir gcc-$GCC_V/gmp
   test -d "mpfr-$MPFR_V"              || tar -xzf "mpfr-$MPFR_V.tar.gz" -C gcc-$GCC_V/mpfr
 # Certain platforms might require Makefile cross compiling
 
