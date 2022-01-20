@@ -27,7 +27,7 @@ jobs:
       - name: install required dependencies
         run: |
          sudo apt-get update
-         sudo apt-get install -yq wget bzip2 gcc g++ make file libmpfr-dev libmpc-dev zlib1g-dev texinfo git gcc-multilib
+         sudo apt-get install -yq wget bzip2 gcc g++ make file libmpfr-dev libmpc-dev zlib1g-dev flex bison git gcc-multilib
           
       - name: Build linux toolchain
         run: bash build-toolchain.sh
@@ -49,7 +49,7 @@ jobs:
         uses: msys2/setup-msys2@v2
         with:
           msystem: ${{matrix.sys}}
-          install: wget bzip2 mingw-w64-${{ matrix.arch }}-gcc make file mpfr-devel mpc-devel zlib texinfo git
+          install: wget bzip2 mingw-w64-${{ matrix.arch }}-gcc make file mpfr-devel mpc-devel zlib flex bison git
           update: true
 
       - name: Build windows toolchain
