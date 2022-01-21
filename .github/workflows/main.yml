@@ -32,18 +32,19 @@ jobs:
       - name: Build linux toolchain
         run: bash build-toolchain.sh
 
-  Compile-Toolchain-windows:
+  Compile-Toolchain-Windows:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Build x86_64 Toolchainsteps:
+      # Build the toolchain if toolchain files changed w.r.t default which is
+      - name: Build x86_64 Toolchain
         run: |
           # Install required dependencies
           sudo apt-get install -yq wget bzip2 gcc g++ make file libmpfr-dev libmpc-dev zlib1g-dev texinfo git gcc-multilib
           # Install Windows cross compile specific dependencies
           sudo apt-get install -yq mingw-w64 libz-mingw-w64-dev autoconf autoconf-archive
-
+          
       - name: Build windows toolchain
-        run: bash build-toolchain.sh
+        run: ./build-toolchain.sh
