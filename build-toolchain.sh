@@ -27,7 +27,7 @@ set -e
 TARGET="mips64-elf"
 TARG_XTRA_OPTS=""
 
-if [ ! -e /usr/bin/x86_64-w64-mingw32-gcc ]; then
+if [ -e /usr/bin/x86_64-w64-mingw32-gcc ]; then
   export CC=x86_64-w64-mingw32-gcc
   TARG_XTRA_OPTS="--host=x86_64-w64-mingw32"
 fi
@@ -70,7 +70,7 @@ test -d "newlib-$NEWLIB_V"            || tar -xzf "newlib-$NEWLIB_V.tar.gz"
 
 # Optional dependency handling
 # Copies the FP libs into GCC sources so they are compiled as part of it
-if [ ! -e /usr/bin/x86_64-w64-mingw32-gcc ]; then
+if [ -e /usr/bin/x86_64-w64-mingw32-gcc ]; then
   GMP_V=6.2.0
   MPC_V=1.2.1
   MPFR_V=4.1.0
@@ -95,7 +95,7 @@ if [ ! -e /usr/bin/x86_64-w64-mingw32-gcc ]; then
 fi
 
 # Certain platforms might require Makefile cross compiling
-if [ ! -e /usr/bin/x86_64-w64-mingw32-gcc ]; then
+if [ -e /usr/bin/x86_64-w64-mingw32-gcc ]; then
   test -f "make-$MAKE_V.tar.gz"       || download "https://ftp.gnu.org/gnu/make/make-$MAKE_V.tar.gz"
   test -d "make-$MAKE_V"              || tar -xzf "make-$MAKE_V.tar.gz"
 fi
@@ -192,7 +192,7 @@ make -j "$JOBS"
 make install-strip || sudo make install-strip || su -c "make install-strip"
 echo "Finished Compiling gcc-$GCC_V for MIPS N64 - (pass 2) outside of the source tree"
 
-if [ ! -e /usr/bin/x86_64-w64-mingw32-gcc ]; then
+if [ -e /usr/bin/x86_64-w64-mingw32-gcc ]; then
 echo "Compiling make-$MAKE_V" # As make is otherwise not available on Windows
 cd ../"make-$MAKE_V"
   ./configure \
@@ -207,7 +207,7 @@ make clean
 echo "Finished Compiling make-$MAKE_V"
 fi
 
-if [ ! -e /usr/bin/x86_64-w64-mingw32-gcc ]; then
+if [ -e /usr/bin/x86_64-w64-mingw32-gcc ]; then
   echo "Cross compile successful"
 else
   echo "Native compile successful"
