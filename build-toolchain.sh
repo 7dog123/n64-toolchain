@@ -27,8 +27,6 @@ set -e
 if [ ! -x x86_64-w64-mingw32-gcc ] then;
   export CC=x86_64-w64-mingw32-gcc
   TARG_XTRA_OPTS="--host=x86_64-w64-mingw32"
-else
-  TARG_XTRA_OPTS=""
 fi
 
 BINUTILS_V=2.36.1 # linux works fine with 2.37 (but is it worth the effort?)
