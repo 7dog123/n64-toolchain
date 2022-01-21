@@ -24,6 +24,8 @@ set -e
   # rm -rf "$INSTALL_PATH" # We should probably do a clean install?!
   mkdir -p "$INSTALL_PATH" # But make sure the install path exists!
 
+TARGET="mips64-elf"
+
 if [ ! -x x86_64-w64-mingw32-gcc ]; then
   export CC=x86_64-w64-mingw32-gcc
   TARG_XTRA_OPTS="--host=x86_64-w64-mingw32"
