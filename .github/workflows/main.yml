@@ -34,7 +34,11 @@ jobs:
 
   Compile-Toolchain-windows:
     runs-on: ubuntu-latest
-      - name: Build x86_64 Toolchain
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Build x86_64 Toolchainsteps:
         run: |
           # Install required dependencies
           sudo apt-get install -yq wget bzip2 gcc g++ make file libmpfr-dev libmpc-dev zlib1g-dev texinfo git gcc-multilib
