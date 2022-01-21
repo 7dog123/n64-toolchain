@@ -26,7 +26,7 @@ set -e
 
 TARGET="mips64-elf"
 
-if [[ "$OSTYPE" == "linux-gnu"* ]]; then
+if [[ ! -x x86_64-linux-gnu-gcc ]]; then
   export CC=x86_64-linux-gnu-gcc
   TARG_XTRA_OPTS="--host=x86_64-linux-gnu"
 elif [[ ! -x x86_64-w64-mingw32-gcc ]]; then
@@ -96,12 +96,16 @@ if [ ! -x x86_64-w64-mingw32-gcc ]; then
   cd "gcc-$GCC_V"
   ln -sf ../"mpfr-$MPFR_V" "mpfr"
   cd ..
+elif [ ! -x x86_64-linux-gnu-gcc ]; then
+  echo "Do Nothing"
 fi
 
 # Certain platforms might require Makefile cross compiling
 if [ ! -x x86_64-w64-mingw32-gcc ]; then
   test -f "make-$MAKE_V.tar.gz"       || download "https://ftp.gnu.org/gnu/make/make-$MAKE_V.tar.gz"
   test -d "make-$MAKE_V"              || tar -xzf "make-$MAKE_V.tar.gz"
+elif [ ! -x x86_64-linux-gnu-gcc ]; then
+  echo "Do Nothing"
 fi
 
 echo "Stage: Compile toolchain"
@@ -213,6 +217,6 @@ fi
 
 if [ ! -x x86_64-w64-mingw32-gcc ]; then
   echo "Cross compile successful"
-else
+elif [ ! -x x86_64-linux-gnu-gcc ]; then
   echo "Native compile successful"
 fi
